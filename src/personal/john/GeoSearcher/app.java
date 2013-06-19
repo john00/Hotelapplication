@@ -595,43 +595,6 @@ public class app extends MapActivity implements LocationListener, OnClickListene
    		mLocationManager.removeUpdates(this);
 	}
 
-//	private String getLocationName(Location loc) {
-//		// 座標を変換
-//		double latitude = loc.getLatitude();
-//		double longitude = loc.getLongitude();
-//		// Geocoderを使用して地名を検索する
-//		StringBuffer buff = new StringBuffer();
-//		try {
-//			List<Address> addressList = mGeocoder.getFromLocation(latitude, longitude, 1);
-//			if(!addressList.isEmpty()){
-//				Address address = addressList.get(0);
-//				String line = null;
-//				for (int i = 0; (line = address.getAddressLine(i)) != null; i++){
-//					buff.append(line+"\n");
-//				}
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			List<Address> addrs = mGeocoder.getFromLocation(latitude, longitude, 1);
-//
-//			for (Address addr : addrs) {
-//				// 地名を取得して、文字列に連結する
-//				int index = addr.getMaxAddressLineIndex();
-//				for (int i = 0; i <= index; ++i) {
-//					buff.append(addr.getAddressLine(i));
-//					buff.append(" ");
-//				}
-//				buff.append("\n");
-//			}
-//
-//		} catch (IOException e) {
-//			Log.e(TAG, e.toString());
-//		}
-//		// 地名
-//		return buff.toString();
-//	}
 
 	public void onProviderDisabled(String arg0) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -667,7 +630,7 @@ public class app extends MapActivity implements LocationListener, OnClickListene
 	        geopoint = new GeoPoint((int)(latitude * 1E6), (int)(longitude * 1E6));
 	        overlayItem = new RakutenOverlayItem(geopoint,
 	        		mTargetList.get(i).getName(),
-	        		mTargetList.get(i).getSpecial() /*mTargetList.get(i).mPrShort*/,
+	        		mTargetList.get(i).getAddress() /*mTargetList.get(i).mPrShort*/,
 	        		mTargetList.get(i));
 	        // オーバーレイへItemを追加
 	        mPinOverlay.addItem(overlayItem);
@@ -753,21 +716,4 @@ public class app extends MapActivity implements LocationListener, OnClickListene
 		return geoPoint;
     }
 
-//   private static class GeoOpenHelper extends SQLiteOpenHelper {
-//
-//		public GeoOpenHelper(Context context) {
-//			super(context, DB_NAME, null, DB_VERSION);
-//		}
-//
-//		@Override
-//		public void onCreate(SQLiteDatabase db) {
-//			db.execSQL(CREATE_TABLE);
-//
-//		}
-//
-//		@Override
-//		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//
-//		}
-//   }
 }

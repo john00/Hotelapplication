@@ -49,8 +49,9 @@ public class PinOverlay extends ItemizedOverlay<RakutenOverlayItem> {
 	protected boolean onTap(int index){
 		if(index < mItemList.size()) {
 			OverlayItem item = mItemList.get(index);
-			final String strTelphoneNo = "tel:" + mItemList.get(index).mInfo.mTelephoneNo;
-			final String strWebUrl = mItemList.get(index).mInfo.mInfomationUrl;
+			final String strTelphoneNo = "tel:" + mItemList.get(index).mInfo.getTelephoneNo();
+			final String strWebUrl = mItemList.get(index).mInfo.getInfomationUrl();
+			final String strAddress = mItemList.get(index).mInfo.getAddress();
 //			Dialog dialog = new Dialog(mContext);
 //			dialog.setContentView(R.layout.hoteldialog);
 			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);

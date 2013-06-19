@@ -2,7 +2,7 @@
 <resources>
     <string name="hello">Hello World, app!</string>
     <string name="app_name">近場のホテル検索</string>
-    <string name="map_key">0esTWhF-VJ9fb2d3MFELRaa8Zc4IpimSYX6w-4g</string>
+    <string name="map_key">0906jwZsKN_U5OIAJJIdw1OfDE3RKrSzxDxp9NA</string>
     <string name="load_dialog_title">接続中.....</string>
     <string name="rakuten_key">939efa54bb0986afd2f2ca7cfc89ad41</string>
 </resources>

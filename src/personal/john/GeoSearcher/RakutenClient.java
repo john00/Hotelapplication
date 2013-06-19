@@ -119,33 +119,39 @@ public class RakutenClient {
 				setRecordCount(mText);
 				mOnCatchText = false;
 			}else if (localName.equals("hotelNo")){
-				mInfo.mNo = mText;
+				mInfo.setNo(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("hotelName")){
-				mInfo.mName = mText;
+				mInfo.setName(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("hotelKanaName")){
-				mInfo.mKanaName = mText;
+				mInfo.setKanaName(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("latitude")){
-				mInfo.mLatitude = mText;
+				mInfo.setLatitude(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("longitude")){
-				mInfo.mLongitude = mText;
+				mInfo.setLongitude(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("hotelInformationUrl")){
-				mInfo.mInfomationUrl = mText;
+				mInfo.setInfomationUrl(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("planListUrl")){
-				mInfo.mPlanListUrl = mText;
+				mInfo.setPlanListUrl(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("telephoneNo")){
-				mInfo.mTelephoneNo = mText;
+				mInfo.setTelephoneNo(mText);		// mod 0619
 				mOnCatchText = false;
 			}else if (localName.equals("hotelSpecial")){
-				mInfo.mSpecial = mText;
+				mInfo.setSpecial(mText);		// mod 0619
+				mOnCatchText = false;
+
+				/* add start 0619 */
+			}else if (localName.equals("address1")){
+				mInfo.setAddress(mText);
 				mOnCatchText = false;
 			}
+				/* add end 0619 */
 		}
 
 		public void characters(char[] ch, int start, int length){
