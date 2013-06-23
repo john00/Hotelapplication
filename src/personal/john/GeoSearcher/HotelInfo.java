@@ -16,7 +16,8 @@ public class HotelInfo {
 	private String mTelephoneNo = null;
 	private String mPrShort = null;
 	private String mSpecial = null;
-	private String mAddress = null;	  /* add 0619 */
+	private String mAddress1 = null;
+	private String mAddress2 = null;
 
 
 	public HotelInfo(){
@@ -29,7 +30,6 @@ public class HotelInfo {
 		mName = name;
 	}
 
-	/* add 0619 */
 	public void setNo(String no) {
 		mNo = no;
 	}
@@ -38,7 +38,6 @@ public class HotelInfo {
 		return mNo;
 	}
 
-	/* add 0619 */
 	public void setName(String name) {
 		mName = name;
 	}
@@ -47,7 +46,6 @@ public class HotelInfo {
 		return mName;
 	}
 
-	/* add 0619 */
 	public void setKanaName(String kananame) {
 		mKanaName = kananame;
 	}
@@ -56,7 +54,6 @@ public class HotelInfo {
 		return mKanaName;
 	}
 
-/* add start 0619 */
 	public void setLatitude(String latitude) {
 		mLatitude = latitude;
 	}
@@ -72,7 +69,6 @@ public class HotelInfo {
 	public String getLongitude(){
 		return mLongitude;
 	}
-/* add end 0619 */
 
 	public Location getLocation(){
 		mLocation.setAltitude(0);
@@ -86,7 +82,6 @@ public class HotelInfo {
 		return gpHotel;
 	}
 
-	/* add 0619 */
 	public void setInfomationUrl(String infomationurl) {
 		mInfomationUrl = infomationurl;
 	}
@@ -95,7 +90,6 @@ public class HotelInfo {
 		return mInfomationUrl;
 	}
 
-	/* add 0619 */
 	public void setPlanListUrl(String planlisturl) {
 		mPlanListUrl = planlisturl;
 	}
@@ -104,7 +98,6 @@ public class HotelInfo {
 		return mPlanListUrl;
 	}
 
-	/* add 0619 */
 	public void setTelephoneNo(String telephoneno) {
 		mTelephoneNo = telephoneno;
 	}
@@ -121,7 +114,6 @@ public class HotelInfo {
 		}
 	}
 
-	/* add 0619 */
 	public void setSpecial(String special) {
 		mSpecial = special;
 	}
@@ -130,14 +122,16 @@ public class HotelInfo {
 		return mSpecial;
 	}
 
-	/* add start 0619 */
-	public void setAddress(String address) {
-		mAddress = address;
+	public void setAddress1(String address1) {
+		mAddress1 = address1;
+	}
+
+	public void setAddress2(String address2) {
+		mAddress2 = address2;
 	}
 
 	public String getAddress() {
-		return mAddress;
+		return mAddress1 + mAddress2;
 	}
-	/* add end 0619 */
 }
 

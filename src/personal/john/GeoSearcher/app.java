@@ -283,7 +283,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 
 
 public class app extends MapActivity implements LocationListener, OnClickListener, RakutenClientReceiver {
-	static final String TAG = "app";
+	static final String TAG = MapActivity.class.getSimpleName();
 
 //    private LocationManager lmLocMg;
 	private MapController mcCtrl;

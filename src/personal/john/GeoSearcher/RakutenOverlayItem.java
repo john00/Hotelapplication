@@ -6,8 +6,8 @@ import com.google.android.maps.OverlayItem;
 public class RakutenOverlayItem extends OverlayItem {
 
 	HotelInfo mInfo = null;
-	public RakutenOverlayItem(GeoPoint point, String title, String address, HotelInfo info) {
-		super(point, title, address);
+	public RakutenOverlayItem(GeoPoint point, String title, String snippet, HotelInfo info) {
+		super(point, title, snippet);
 		mInfo = info;
 	}
 
