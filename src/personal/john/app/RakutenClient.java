@@ -1,4 +1,4 @@
-package personal.john.GeoSearcher;
+package personal.john.app;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +43,8 @@ public class RakutenClient {
 	public static final int RANGE_3000 = 5;
 	public static final int CATEGORY_LARGE = 0;
 	public static final int CATEGORY_SMALL = 1;
+	
+	private double mRange;
 
 	public RakutenClient(RakutenClientReceiver receiver)
 			throws ParserConfigurationException, SAXException {
@@ -50,6 +52,7 @@ public class RakutenClient {
 		mParser = factory.newSAXParser();
 		mRakutenClientReceiver = receiver;
 		mHotelHandler = new HotelHandler();
+		mRange = 1;
 	}
 
 	public void requestHotel(double latitude, double longitude, double range)
@@ -68,10 +71,18 @@ public class RakutenClient {
 	public int getRecordCount() {
 		return Integer.parseInt(mRecordCount);
 	}
+	
+	public void setSearchRange(double range) {
+		mRange = range;
+	}
+	
+	public double getSearchRange() {
+		return mRange;
+	}
 
 	class HotelHandler extends DefaultHandler {
 		private ArrayList<HotelInfo> mInfoList = null;
-		private HotelInfo mInfo = null;
+		private HotelInfo mHotelInfo = null;
 		private String mText = null;
 		private boolean mOnCatchText = false;
 
@@ -92,7 +103,7 @@ public class RakutenClient {
 					+ "localName=" + localName + ", qName=" + qName
 					+ ",attributes length=" + attributes.getLength());
 			if (localName.equals("hotel")) {
-				mInfo = new HotelInfo();
+				mHotelInfo = new HotelInfo();
 			} else if (localName.equals("recordCount")) {
 				mOnCatchText = true;
 			} else if (localName.equals("hotelNo")) {
@@ -124,42 +135,42 @@ public class RakutenClient {
 			Log.d(LOG_Hotel, "endElement:uri=" + uri.toString()
 					+ ", localName=" + localName + ", qName=" + qName);
 			if (localName.equals("hotel")) {
-				mInfoList.add(mInfo);
+				mInfoList.add(mHotelInfo);
 			} else if (localName.equals("recordCount")) {
 				setRecordCount(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("hotelNo")) {
-				mInfo.setNo(mText);
+				mHotelInfo.setNo(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("hotelName")) {
-				mInfo.setName(mText);
+				mHotelInfo.setName(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("hotelKanaName")) {
-				mInfo.setKanaName(mText);
+				mHotelInfo.setKanaName(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("latitude")) {
-				mInfo.setLatitude(mText);
+				mHotelInfo.setLatitude(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("longitude")) {
-				mInfo.setLongitude(mText);
+				mHotelInfo.setLongitude(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("hotelInformationUrl")) {
-				mInfo.setInfomationUrl(mText);
+				mHotelInfo.setInfomationUrl(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("planListUrl")) {
-				mInfo.setPlanListUrl(mText);
+				mHotelInfo.setPlanListUrl(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("telephoneNo")) {
-				mInfo.setTelephoneNo(mText);
+				mHotelInfo.setTelephoneNo(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("hotelSpecial")) {
-				mInfo.setSpecial(mText);
+				mHotelInfo.setSpecial(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("address1")) {
-				mInfo.setAddress1(mText);
+				mHotelInfo.setAddress1(mText);
 				mOnCatchText = false;
 			} else if (localName.equals("address2")) {
-				mInfo.setAddress2(mText);
+				mHotelInfo.setAddress2(mText);
 				mOnCatchText = false;
 			}
 		}
@@ -174,7 +185,7 @@ public class RakutenClient {
 		public void error(SAXParseException e) {
 			Log.d(LOG_Hotel, "error:" + e.toString());
 			mText = null;
-			mInfo = null;
+			mHotelInfo = null;
 			mInfoList.clear();
 			mInfoList = null;
 			mRakutenClientReceiver.receiveError(ERROR_GENERAL);
@@ -183,7 +194,7 @@ public class RakutenClient {
 		public void fatalError(SAXParseException e) {
 			Log.d(LOG_Hotel, "fatalError:" + e.toString());
 			mText = null;
-			mInfo = null;
+			mHotelInfo = null;
 			mInfoList.clear();
 			mInfoList = null;
 			mRakutenClientReceiver.receiveError(ERROR_GENERAL);

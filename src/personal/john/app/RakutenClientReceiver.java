@@ -1,4 +1,4 @@
-package personal.john.GeoSearcher;
+package personal.john.app;
 
 import java.util.ArrayList;
 

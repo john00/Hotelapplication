@@ -1,6 +1,6 @@
-package personal.john.GeoSearcher;
+package personal.john.app;
 
-import com.google.android.maps.GeoPoint;
+//import com.google.android.maps.GeoPoint;
 
 import android.location.Location;
 
@@ -77,10 +77,10 @@ public class HotelInfo {
 		return mLocation;
 	}
 
-	public GeoPoint getGPoint(){
-		GeoPoint gpHotel = new GeoPoint((int)(mLocation.getLatitude()*1E6), (int)(mLocation.getLongitude()*1E6));
-		return gpHotel;
-	}
+//	public GeoPoint getGPoint(){
+//		GeoPoint gpHotel = new GeoPoint((int)(mLocation.getLatitude()*1E6), (int)(mLocation.getLongitude()*1E6));
+//		return gpHotel;
+//	}
 
 	public void setInfomationUrl(String infomationurl) {
 		mInfomationUrl = infomationurl;
