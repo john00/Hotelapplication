@@ -34,7 +34,7 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/map_api_key_release" />
+            android:value="@string/map_api_key_debug" />
         
         <activity
             android:name="personal.john.app.MainActivity"

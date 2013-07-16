@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">GeoSearcher</string>
+    <string name="app_name">近場のホテル検索アプリ</string>
     <string name="menuitem_exit">終了</string>
     <string name="hello_world">Hello world!</string>
     <string name="map_api_key_debug">AIzaSyD-zwuKTJeAr8-2sOu9ORXvekmdp-Th-nM</string> 
