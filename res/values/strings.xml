@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">近場のホテル検索アプリ</string>
-    <string name="menuitem_exit">終了</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="map_api_key_debug">AIzaSyD-zwuKTJeAr8-2sOu9ORXvekmdp-Th-nM</string> 
-    <string name="map_api_key_release">AIzaSyCa7WvVpNsIK2p8Xxd1_lKn3Yv6ntm-NaE</string> 
-    <string name="bt_lb_hotel_search">ホテル検索</string>
-    <string name="bt_lb_hotel_search_detail">絞込検索</string>
-    <string name="menuitem_range">検索範囲</string>
-
+    <string name="hello">Hello World, app!</string>
+    <string name="app_name">近場のホテル検索</string>
+    <string name="map_api_key">AIzaSyCQX-fiKb-bknHeOW3bAoh9pqC15DzoKSw</string>
+    <string name="load_dialog_title">接続中.....</string>
+    <string name="rakuten_key">939efa54bb0986afd2f2ca7cfc89ad41</string>
+    <string name="action_settings">Settings</string>
 </resources>
