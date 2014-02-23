@@ -33,6 +33,7 @@ public class RakutenClient {
 	private RakutenClientReceiver mRakutenClientReceiver = null;
 	private HotelHandler mHotelHandler = null;
 	private String mRecordCount = "0";
+	
 
 	public static final int ERROR_GENERAL = 1;
 	public static final int ERROR_FATAL = 2;
@@ -43,7 +44,9 @@ public class RakutenClient {
 	public static final int RANGE_3000 = 5;
 	public static final int CATEGORY_LARGE = 0;
 	public static final int CATEGORY_SMALL = 1;
-	
+
+	private double mMyLatitude = 0;
+	private double mMyLongitude = 0;
 	private double mRange;
 
 	public RakutenClient(RakutenClientReceiver receiver)
@@ -53,6 +56,15 @@ public class RakutenClient {
 		mRakutenClientReceiver = receiver;
 		mHotelHandler = new HotelHandler();
 		mRange = 1;
+	}
+
+	public void requestHotel()
+			throws SAXException, IOException {
+		Log.v(LOG_TAG, "request Hotels.");
+		String request = new String(API_URI + DEV_ID + OPERATION + VERSION
+				+ LATITUDE + mMyLatitude + LONGITUDE + mMyLongitude + SEARCHRADIUS
+				+ mRange + DATUMTYPE);
+		mParser.parse(request, mHotelHandler);
 	}
 
 	public void requestHotel(double latitude, double longitude, double range)
@@ -71,7 +83,22 @@ public class RakutenClient {
 	public int getRecordCount() {
 		return Integer.parseInt(mRecordCount);
 	}
-	
+
+	public double getmMyLatitute() {
+		return mMyLatitude;
+	}
+
+	public void setmMyLatitute(double latitude) {
+		mMyLatitude = latitude;
+	}
+
+	public double getmMyLongitude() {
+		return mMyLongitude;
+	}
+
+	public void setmMyLongitude(double longitude) {
+		mMyLongitude = longitude;
+	}
 	public void setSearchRange(double range) {
 		mRange = range;
 	}

@@ -7,8 +7,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import personal.john.app.R;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,6 +47,10 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	/* data */
 	ArrayList<HotelInfo> mTargetList = null;
 	RakutenClient mRakutenClient = null;
+	ArrayList<DirectionsData> mDirectionsList = null;
+	
+	// DB用オブジェクト
+	private GeoSearcherDB mDatabaseObject;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,21 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		
 		setupMapIfNeeded();
 		
+		// 初期位置を現在地に設定
+        String provider = "";
+    	if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+    		provider = LocationManager.GPS_PROVIDER;
+    	} else {
+    		provider = LocationManager.NETWORK_PROVIDER;
+    	}
+
+		Location loc = mLocationManager.getLastKnownLocation(provider);
+		if (loc != null) {
+			CameraUpdate iniCamera = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().
+					target(new LatLng(loc.getLatitude(), loc.getLongitude())).zoom(14.0f).build());
+			mMap.moveCamera(iniCamera);
+		}
+		
 		// ボタン作成
 		Button btHotelSearch = (Button) findViewById(R.id.bt_hotel_search);
 		btHotelSearch.setOnClickListener(this);
@@ -86,56 +103,42 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+		
+		// DB作成
+		mDatabaseObject = new GeoSearcherDB(this);
+		
+		mDirectionsList = new ArrayList<DirectionsData>();
+		
 	}
 	
 	@Override
 	protected void onStart() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onStart();
 		setupMapIfNeeded();
 		
 		if(mLocationManager != null) {
 			mMap.setMyLocationEnabled(true);
-			// マップ位置初期化（とりあえず東京駅）
 		}
 	}
 	
 	@Override
 	protected void onResume() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onResume();
-		
-        String provider = "";
-    	if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-    		provider = LocationManager.GPS_PROVIDER;
-    	} else {
-    		provider = LocationManager.NETWORK_PROVIDER;
-    	}
-
-		Location loc = mLocationManager.getLastKnownLocation(provider);
-		if (loc != null) {
-			CameraUpdate iniCamera = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().
-					target(new LatLng(loc.getLatitude(), loc.getLongitude())).zoom(14.0f).build());
-			mMap.moveCamera(iniCamera);
-		}
 		
 	}
 
 	@Override
 	protected void onDestroy() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onPause() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onPause();
 	}
 
 	@Override
 	protected void onStop() {
-		// TODO 自動生成されたメソッド・スタブ
 		super.onStop();
 	}
 
@@ -150,14 +153,12 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO 自動生成されたメソッド・スタブ
 		final String[] itemslist = {"100m", "500m", "1000m", "2000m", "3000m"};
 		
 		switch(item.getItemId()) {
@@ -206,7 +207,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO 自動生成されたメソッド・スタブ
         if (mListener != null) {
             mListener.onLocationChanged(location);
         }
@@ -214,47 +214,28 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
 	@Override
 	public void onProviderDisabled(String arg0) {
-		// TODO 自動生成されたメソッド・スタブ
 		
 	}
 
 	@Override
 	public void onProviderEnabled(String arg0) {
-		// TODO 自動生成されたメソッド・スタブ
 		
 	}
 
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-		// TODO 自動生成されたメソッド・スタブ
 		
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO 自動生成されたメソッド・スタブ
 		switch(v.getId()) {
 		case R.id.bt_hotel_search:
 			// 現在地周辺のホテルを検索する。
-			// Toast.makeText(this, "GPSを有効に設定してください。", Toast.LENGTH_SHORT).show();  // テスト用
-			
 			queryInfo();
-			updateMarker();
-			if (0 == mRakutenClient.getRecordCount()) {
-				new AlertDialog.Builder(this)
-				.setTitle("検索結果なし")
-				.setMessage("近場にホテルがありません。検索範囲を広げるか、移動して再度検索を行ってください。")
-				.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-				    public void onClick(DialogInterface dialog, int id) {
-				        dialog.cancel();
-				   }
-				})
-				.show();
-			}
 			break;
 		case R.id.bt_hotel_search_detail:
 			// 絞り込み検索用の画面を表示する。
-			mMap.clear();
 			break;
 		default:
 			break;
@@ -263,13 +244,11 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
 	@Override
 	public void activate(OnLocationChangedListener listener) {
-		// TODO 自動生成されたメソッド・スタブ
 		mListener = listener;
 	}
 
 	@Override
 	public void deactivate() {
-		// TODO 自動生成されたメソッド・スタブ
 		mListener = null;
 	}
 
@@ -294,23 +273,16 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	}
 	
 	private void queryInfo(){
-		double latitude;
-		double longitude;
-		double range;
-
-		latitude = mMap.getMyLocation().getLatitude();
-		longitude = mMap.getMyLocation().getLongitude();
-		range = mRakutenClient.getSearchRange();
-		try {
-			mRakutenClient.requestHotel(latitude, longitude, range);
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		RakutenClientExecuteThread rcExeThread = new RakutenClientExecuteThread(this);
+		
+		mRakutenClient.setmMyLatitute(mMap.getMyLocation().getLatitude());
+		mRakutenClient.setmMyLongitude(mMap.getMyLocation().getLongitude());
+		
+		rcExeThread.execute(mRakutenClient);
+		
 	}
 
-	private void updateMarker() {
+	public void updateMarker() {
 		if (mTargetList == null){
 			return;
 		}
@@ -320,57 +292,62 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		mMap.setOnInfoWindowClickListener(this);
 		
 		for(int iHotel = 0; iHotel < size; iHotel++) {
-			LatLng latlng = new LatLng(mTargetList.get(iHotel).getLocation().getLatitude(), mTargetList.get(iHotel).getLocation().getLongitude());
-			String title = mTargetList.get(iHotel).getName();
-			BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
-//			BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-			MarkerOptions options = new MarkerOptions();
-			
-			options.position(latlng).title(title).icon(icon).snippet(mTargetList.get(iHotel).getAddress());
-			mMap.addMarker(options);
+			int iArrived = 0;
+			if (mTargetList.get(iHotel).getNo() != "") {
+				mDatabaseObject.GeoSearcherDBOpen();
+				iArrived = mDatabaseObject.readArrivedData(mTargetList.get(iHotel).getNo());
+				mDatabaseObject.GeoSearcherDBClose();
+			}
+			if (iArrived != 1) {
+				LatLng latlng = new LatLng(mTargetList.get(iHotel).getLocation().getLatitude(), mTargetList.get(iHotel).getLocation().getLongitude());
+				String title = mTargetList.get(iHotel).getName();
+				BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+				MarkerOptions options = new MarkerOptions();
+				
+				options.position(latlng).title(title).icon(icon).snippet(mTargetList.get(iHotel).getAddress());
+				mMap.addMarker(options);
+			}
 		}
-		
 	}
 
 	@Override
 	public void onInfoWindowClick(Marker marker) {
-		// TODO 自動生成されたメソッド・スタブ
+		final Marker tapMarker = marker;
 		final int iTargetListIndex  = Integer.parseInt(marker.getId().substring(1));
-//		Toast.makeText(this, mTargetList.get(Integer.parseInt(str)).getAddress(), Toast.LENGTH_SHORT).show();  // テスト用
+		final CharSequence[] items={"電話で予約","ルート表示", "メモ", "閉じる"};
 		
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(marker.getTitle());
 
-		dialog.setMessage(marker.getSnippet());
-		dialog.setNegativeButton("閉じる", new DialogInterface.OnClickListener(){
+		dialog.setItems(items, new DialogInterface.OnClickListener(){
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-			}
-		});
-
-		dialog.setNeutralButton("Tel", new DialogInterface.OnClickListener(){
-			public void onClick(DialogInterface dialog, int which) {
-				String strTelphoneNo = "tel:" + mTargetList.get(iTargetListIndex).getTelephoneNo();
-				Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(strTelphoneNo));
-				startActivity(intent);
-			}
-		});
-		dialog.setPositiveButton("Web", new DialogInterface.OnClickListener(){
-			public void onClick(DialogInterface dialog, int which) {
-				try {
-					String strWebUrl = mTargetList.get(iTargetListIndex).getInfomationUrl();
-					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(strWebUrl));
+				switch(which) {
+				case 0:	// 電話
+					String strTelphoneNo = "tel:" + mTargetList.get(iTargetListIndex).getTelephoneNo();
+					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(strTelphoneNo));
 					startActivity(intent);
-				} catch (Exception e) {
-/*					TextView textErr = new TextView(this);
-					textErr.setText(e.getMessage());
-					Dialog dialogErr = new Dialog(mContext);
-					dialogErr.setTitle(e.getClass().getName());
-					dialogErr.setContentView(textErr);
-					dialogErr.show();
-*/				}
+					break;
+				case 1:	// ルート表示
+					DirectionsData dd = mDirectionsList.get(iTargetListIndex);
+					Toast.makeText(MainActivity.this, dd.getCopyright(), Toast.LENGTH_SHORT).show();  // テスト用
+					break;
+				case 2: // メモ
+					String[] strInfo = {mTargetList.get(iTargetListIndex).getNo(),"0"};
+					mDatabaseObject.GeoSearcherDBOpen();
+					if (mDatabaseObject.readArrivedData(mTargetList.get(iTargetListIndex).getNo()) != 0) strInfo[1] = "1";
+					mDatabaseObject.GeoSearcherDBClose();
+					Intent intentToSettingWindow = new Intent();
+					intentToSettingWindow.setClassName("personal.john.app", "personal.john.app.MemoWindow");
+					intentToSettingWindow.putExtra("personal.john.app.Arrived", strInfo);
+					
+					startActivity(intentToSettingWindow);
+					break;
+				default:
+				}
 			}
-		});
+        });
+
 		dialog.show();
 		
 	}

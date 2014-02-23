@@ -184,9 +184,11 @@ containing a value of this type.
     public static final class id {
         public static final int bt_hotel_search=0x7f050006;
         public static final int bt_hotel_search_detail=0x7f050007;
+        public static final int bt_memo_regist=0x7f050009;
+        public static final int checkbox_id=0x7f050008;
         public static final int hybrid=0x7f050004;
-        public static final int item_exit=0x7f050009;
-        public static final int item_range=0x7f050008;
+        public static final int item_exit=0x7f05000b;
+        public static final int item_range=0x7f05000a;
         public static final int map=0x7f050005;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
@@ -196,12 +198,14 @@ containing a value of this type.
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int include_map_flagment=0x7f030001;
+        public static final int memo=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f090000;
     }
     public static final class string {
         public static final int app_name=0x7f060015;
+        public static final int app_settingname=0x7f060016;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=70] 
          */
         public static final int auth_client_availability_notification_title=0x7f06000f;
@@ -211,8 +215,9 @@ containing a value of this type.
         /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
          */
         public static final int auth_client_requested_by_msg=0x7f060011;
-        public static final int bt_lb_hotel_search=0x7f06001a;
-        public static final int bt_lb_hotel_search_detail=0x7f06001b;
+        public static final int bt_lb_hotel_search=0x7f06001b;
+        public static final int bt_lb_hotel_search_detail=0x7f06001c;
+        public static final int bt_lb_memo_regist=0x7f06001f;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -268,7 +273,8 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f06000e;
-        public static final int hello_world=0x7f060017;
+        public static final int hello_world=0x7f060018;
+        public static final int label_Arrive=0x7f06001e;
         /**  Location client code resources (prefix with location_client) 
 
         Begin strings for location.reporting
@@ -280,10 +286,10 @@ containing a value of this type.
         public static final int location_client_ulr_inactive_age_under_13=0x7f060012;
         public static final int location_client_ulr_inactive_age_unknown=0x7f060013;
         public static final int location_client_ulr_inactive_unknown_restriction=0x7f060014;
-        public static final int map_api_key_debug=0x7f060018;
-        public static final int map_api_key_release=0x7f060019;
-        public static final int menuitem_exit=0x7f060016;
-        public static final int menuitem_range=0x7f06001c;
+        public static final int map_api_key_debug=0x7f060019;
+        public static final int map_api_key_release=0x7f06001a;
+        public static final int menuitem_exit=0x7f060017;
+        public static final int menuitem_range=0x7f06001d;
     }
     public static final class style {
         /** 
@@ -356,7 +362,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraBearing
+          @attr name personal.john.app:cameraBearing
         */
         public static final int MapAttrs_cameraBearing = 1;
         /**
@@ -370,7 +376,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLat
+          @attr name personal.john.app:cameraTargetLat
         */
         public static final int MapAttrs_cameraTargetLat = 2;
         /**
@@ -384,7 +390,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTargetLng
+          @attr name personal.john.app:cameraTargetLng
         */
         public static final int MapAttrs_cameraTargetLng = 3;
         /**
@@ -398,7 +404,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraTilt
+          @attr name personal.john.app:cameraTilt
         */
         public static final int MapAttrs_cameraTilt = 4;
         /**
@@ -412,7 +418,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:cameraZoom
+          @attr name personal.john.app:cameraZoom
         */
         public static final int MapAttrs_cameraZoom = 5;
         /**
@@ -432,7 +438,7 @@ containing a value of this type.
 <tr><td><code>terrain</code></td><td>3</td><td></td></tr>
 <tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
 </table>
-          @attr name android:mapType
+          @attr name personal.john.app:mapType
         */
         public static final int MapAttrs_mapType = 0;
         /**
@@ -446,7 +452,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiCompass
+          @attr name personal.john.app:uiCompass
         */
         public static final int MapAttrs_uiCompass = 6;
         /**
@@ -460,7 +466,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiRotateGestures
+          @attr name personal.john.app:uiRotateGestures
         */
         public static final int MapAttrs_uiRotateGestures = 7;
         /**
@@ -474,7 +480,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiScrollGestures
+          @attr name personal.john.app:uiScrollGestures
         */
         public static final int MapAttrs_uiScrollGestures = 8;
         /**
@@ -488,7 +494,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiTiltGestures
+          @attr name personal.john.app:uiTiltGestures
         */
         public static final int MapAttrs_uiTiltGestures = 9;
         /**
@@ -502,7 +508,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomControls
+          @attr name personal.john.app:uiZoomControls
         */
         public static final int MapAttrs_uiZoomControls = 10;
         /**
@@ -516,7 +522,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uiZoomGestures
+          @attr name personal.john.app:uiZoomGestures
         */
         public static final int MapAttrs_uiZoomGestures = 11;
         /**
@@ -530,7 +536,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:useViewLifecycle
+          @attr name personal.john.app:useViewLifecycle
         */
         public static final int MapAttrs_useViewLifecycle = 12;
         /**
@@ -544,7 +550,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:zOrderOnTop
+          @attr name personal.john.app:zOrderOnTop
         */
         public static final int MapAttrs_zOrderOnTop = 13;
     };

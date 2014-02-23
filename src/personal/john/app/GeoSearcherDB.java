@@ -1,0 +1,105 @@
+package personal.john.app;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class GeoSearcherDB {
+	GeoOpenHelper dbGeoOpenHelper;
+
+	/* DB */
+	static final String DB_NAME = "GeoSearcherDB.db";
+	static final String DB_TABLE = "GeoTable";
+	static final String DB_HOTELNAME = "HotelName";
+	static final String DB_ARRIVED = "Arrived";
+	static final int DB_VERSION = 1;
+	static final String CREATE_TABLE = "create table if not exists " + DB_TABLE +
+										"(" + DB_HOTELNAME + " text primary key, " + DB_ARRIVED + ")";
+	private SQLiteDatabase mDb;
+
+	public GeoSearcherDB(Context context) {
+		dbGeoOpenHelper = new GeoOpenHelper(context);
+	}
+
+	public void GeoSearcherDBOpen() {
+		try {
+			mDb = dbGeoOpenHelper.getWritableDatabase();
+		} catch (SQLException e) {
+			Log.e("app", e.toString());
+			mDb = dbGeoOpenHelper.getReadableDatabase();
+		}
+	}
+
+	public void GeoSearcherDBClose() {
+		mDb.close();
+	}
+
+	public SQLiteDatabase getSQLiteDatabase() {
+		return mDb;
+	}
+
+	// 既訪・未訪書き込みメソッド
+	public void writeArrivedData(String strHotelID, int iArraived) {
+		ContentValues values = new ContentValues();
+		// 書き込みデータ作成
+		values.put(DB_HOTELNAME, strHotelID);
+		values.put(DB_ARRIVED, iArraived);
+		
+		// データ書き込み（Update）
+		int iRet = mDb.update(DB_TABLE, values, null, null);
+		if (iRet == 0) {
+			mDb.insert(DB_TABLE, null, values);
+		}
+	}
+	
+	// 既訪・未訪読み込みメソッド
+	public int readArrivedData(String strHotelID){
+		final int RET_ARRIVED = 1;
+		final int RET_NOT_ARRIVED = 0;
+		// カーソル作成
+		Cursor cursor = mDb.query(DB_TABLE, new String[]{DB_HOTELNAME, DB_ARRIVED},
+				DB_HOTELNAME + "=" + strHotelID, null, null, null, null);
+		
+		// ヒットレコードが 0件の場合
+		if (cursor.getCount() <= 0) {
+			cursor.close();
+			return RET_NOT_ARRIVED;
+		}
+
+		cursor.moveToFirst();
+		
+		// ヒットレコードがある場合
+		int iRet = cursor.getInt(1);
+		cursor.close();
+		
+		if (iRet == RET_NOT_ARRIVED) return RET_NOT_ARRIVED;
+		
+		return RET_ARRIVED;
+	}
+
+	public SQLiteDatabase getGSDB() {
+		return mDb;
+	}
+
+    public static class GeoOpenHelper extends SQLiteOpenHelper {
+
+		public GeoOpenHelper(Context context) {
+			super(context, DB_NAME, null, DB_VERSION);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			db.execSQL(CREATE_TABLE);
+
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+		}
+    }
+}
