@@ -16,9 +16,10 @@ public class GeoSearcherDB {
 	static final String DB_TABLE = "GeoTable";
 	static final String DB_HOTELNAME = "HotelName";
 	static final String DB_ARRIVED = "Arrived";
-	static final int DB_VERSION = 1;
+	static final String DB_MEMO = "memo";
+	static final int DB_VERSION = 2;
 	static final String CREATE_TABLE = "create table if not exists " + DB_TABLE +
-										"(" + DB_HOTELNAME + " text primary key, " + DB_ARRIVED + ")";
+										"(" + DB_HOTELNAME + " text primary key, " + DB_ARRIVED + "," + DB_MEMO + ")";
 	private SQLiteDatabase mDb;
 
 	public GeoSearcherDB(Context context) {
@@ -81,6 +82,41 @@ public class GeoSearcherDB {
 		return RET_ARRIVED;
 	}
 
+	// メモ書き込みメソッド
+	public void writeMemoData(String strHotelID, String strMemo) {
+		ContentValues values = new ContentValues();
+		// 書き込みデータ作成
+		values.put(DB_HOTELNAME, strHotelID);
+		values.put(DB_MEMO, strMemo);
+		
+		// データ書き込み（Update）
+		int iRet = mDb.update(DB_TABLE, values, null, null);
+		if (iRet == 0) {
+			mDb.insert(DB_TABLE, null, values);
+		}
+	}
+	// メモ読み込みメソッド
+	public String readMemoData(String strHotelID){
+		// カーソル作成
+		Cursor cursor = mDb.query(DB_TABLE, new String[]{DB_HOTELNAME, DB_MEMO},
+				DB_HOTELNAME + "=" + strHotelID, null, null, null, null);
+		
+		// ヒットレコードが 0件の場合
+		if (cursor.getCount() <= 0) {
+			cursor.close();
+			return "";
+		}
+
+		cursor.moveToFirst();
+		
+		// ヒットレコードがある場合
+		String strRet = cursor.getString(1);
+		cursor.close();
+		
+		return strRet;
+	}
+	
+	
 	public SQLiteDatabase getGSDB() {
 		return mDb;
 	}
@@ -99,7 +135,7 @@ public class GeoSearcherDB {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+			db.execSQL(CREATE_TABLE);
 		}
     }
 }

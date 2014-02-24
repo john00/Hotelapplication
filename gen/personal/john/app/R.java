@@ -184,11 +184,12 @@ containing a value of this type.
     public static final class id {
         public static final int bt_hotel_search=0x7f050006;
         public static final int bt_hotel_search_detail=0x7f050007;
-        public static final int bt_memo_regist=0x7f050009;
+        public static final int bt_memo_regist=0x7f05000a;
         public static final int checkbox_id=0x7f050008;
+        public static final int et_memo=0x7f050009;
         public static final int hybrid=0x7f050004;
-        public static final int item_exit=0x7f05000b;
-        public static final int item_range=0x7f05000a;
+        public static final int item_exit=0x7f05000c;
+        public static final int item_range=0x7f05000b;
         public static final int map=0x7f050005;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;

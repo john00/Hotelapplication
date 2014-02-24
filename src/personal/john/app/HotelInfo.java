@@ -14,7 +14,6 @@ public class HotelInfo {
 	private String mLatitude = null;
 	private String mLongitude = null;
 	private String mTelephoneNo = null;
-	private String mPrShort = null;
 	private String mSpecial = null;
 	private String mAddress1 = null;
 	private String mAddress2 = null;
@@ -76,11 +75,6 @@ public class HotelInfo {
 		mLocation.setLongitude(Location.convert(mLongitude));
 		return mLocation;
 	}
-
-//	public GeoPoint getGPoint(){
-//		GeoPoint gpHotel = new GeoPoint((int)(mLocation.getLatitude()*1E6), (int)(mLocation.getLongitude()*1E6));
-//		return gpHotel;
-//	}
 
 	public void setInfomationUrl(String infomationurl) {
 		mInfomationUrl = infomationurl;

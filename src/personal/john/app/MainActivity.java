@@ -1,12 +1,12 @@
 package personal.john.app;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.google.android.gms.internal.m;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -230,7 +230,8 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
-		case R.id.bt_hotel_search:
+		case R.id.bt_hotel_search:		
+			mMap.clear();
 			// 現在地周辺のホテルを検索する。
 			queryInfo();
 			break;
@@ -289,7 +290,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		
 		int size = mTargetList.size();		
 		mMap.clear();
-		mMap.setOnInfoWindowClickListener(this);
 		
 		for(int iHotel = 0; iHotel < size; iHotel++) {
 			int iArrived = 0;
@@ -308,13 +308,19 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 				mMap.addMarker(options);
 			}
 		}
+		mMap.setOnInfoWindowClickListener(this);
 	}
 
 	@Override
 	public void onInfoWindowClick(Marker marker) {
-		final Marker tapMarker = marker;
-		final int iTargetListIndex  = Integer.parseInt(marker.getId().substring(1));
-		final CharSequence[] items={"電話で予約","ルート表示", "メモ", "閉じる"};
+		// ホテルの住所からmTargetListのインデックスを検索
+		int index;
+		for (index = 0; index < mTargetList.size(); index++) {
+			if(marker.getSnippet().equals(mTargetList.get(index).getAddress())) break;
+		}
+		
+		final int iTargetListIndex = index;
+		final CharSequence[] items = {"電話で予約","ルート表示", "メモ", "閉じる"};
 		
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(marker.getTitle());

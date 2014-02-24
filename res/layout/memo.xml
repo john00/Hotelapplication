@@ -11,6 +11,12 @@
 	    android:checked="false"
 	    android:text="@string/label_Arrive"
 	/>
+    
+    <EditText 
+        android:id="@+id/et_memo"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="22dp" />
 
     <Button
         android:id="@+id/bt_memo_regist"
