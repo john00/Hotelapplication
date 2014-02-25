@@ -4,11 +4,6 @@ import java.io.IOException;
 
 import org.xml.sax.SAXException;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -18,7 +13,7 @@ public class RakutenClientExecuteThread extends AsyncTask<RakutenClient, Void, V
     RakutenClient mRc;
 
     public RakutenClientExecuteThread(MainActivity activity) {
-        // ŒÄ‚Ño‚µŒ³‚ÌƒAƒNƒeƒBƒrƒeƒB
+        // å‘¼ã³å‡ºã—å…ƒã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£
     	mActivity = activity;
     }
 
@@ -41,9 +36,9 @@ public class RakutenClientExecuteThread extends AsyncTask<RakutenClient, Void, V
 		mActivity.updateMarker();
 		if (0 == mRc.getRecordCount()) {
 			new AlertDialog.Builder(mActivity)
-			.setTitle("ŒŸõŒ‹‰Ê‚È‚µ")
-			.setMessage("‹ßê‚Éƒzƒeƒ‹‚ª‚ ‚è‚Ü‚¹‚ñBŒŸõ”ÍˆÍ‚ðL‚°‚é‚©AˆÚ“®‚µ‚ÄÄ“xŒŸõ‚ðs‚Á‚Ä‚­‚¾‚³‚¢B")
-			.setNegativeButton("ƒLƒƒƒ“ƒZƒ‹", new DialogInterface.OnClickListener() {
+			.setTitle("æ¤œç´¢çµæžœãªã—")
+			.setMessage("è¿‘å ´ã«ãƒ›ãƒ†ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚æ¤œç´¢ç¯„å›²ã‚’åºƒã’ã‚‹ã‹ã€ç§»å‹•ã—ã¦å†åº¦æ¤œç´¢ã‚’è¡Œã£ã¦ãã ã•ã„ã€‚")
+			.setNegativeButton("ã‚­ãƒ£ãƒ³ã‚»ãƒ«", new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int id) {
 			        dialog.cancel();
 			   }

@@ -1,7 +1,5 @@
 package personal.john.app;
 
-//import com.google.android.maps.GeoPoint;
-
 import android.location.Location;
 
 public class HotelInfo {
@@ -128,4 +126,3 @@ public class HotelInfo {
 		return mAddress1 + mAddress2;
 	}
 }
-

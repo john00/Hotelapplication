@@ -6,7 +6,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.google.android.gms.internal.m;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,7 +48,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	RakutenClient mRakutenClient = null;
 	ArrayList<DirectionsData> mDirectionsList = null;
 	
-	// DB—pƒIƒuƒWƒFƒNƒg
+	// DBç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	private GeoSearcherDB mDatabaseObject;
 
 	@Override
@@ -67,12 +66,12 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		    	mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000L, 2.0f, this);
 	    	}
 	    } else {
-	    	Toast.makeText(this, "GPS‚ğ—LŒø‚Éİ’è‚µ‚Ä‚­‚¾‚³‚¢B", Toast.LENGTH_SHORT).show();
+	    	Toast.makeText(this, "GPSã‚’æœ‰åŠ¹ã«è¨­å®šã—ã¦ãã ã•ã„ã€‚", Toast.LENGTH_SHORT).show();
 	    }
 		
 		setupMapIfNeeded();
 		
-		// ‰ŠúˆÊ’u‚ğŒ»İ’n‚Éİ’è
+		// åˆæœŸä½ç½®ã‚’ç¾åœ¨åœ°ã«è¨­å®š
         String provider = "";
     	if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
     		provider = LocationManager.GPS_PROVIDER;
@@ -87,7 +86,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			mMap.moveCamera(iniCamera);
 		}
 		
-		// ƒ{ƒ^ƒ“ì¬
+		// ãƒœã‚¿ãƒ³ä½œæˆ
 		Button btHotelSearch = (Button) findViewById(R.id.bt_hotel_search);
 		btHotelSearch.setOnClickListener(this);
 		Button btHotelSearchDetail = (Button) findViewById(R.id.bt_hotel_search_detail);
@@ -104,7 +103,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			e1.printStackTrace();
 		}
 		
-		// DBì¬
+		// DBä½œæˆ
 		mDatabaseObject = new GeoSearcherDB(this);
 		
 		mDirectionsList = new ArrayList<DirectionsData>();
@@ -163,9 +162,9 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		
 		switch(item.getItemId()) {
 		case R.id.item_range:
-			// ƒzƒeƒ‹‚ÌŒŸõ”ÍˆÍİ’è
+			// ãƒ›ãƒ†ãƒ«ã®æ¤œç´¢ç¯„å›²è¨­å®š
 			new AlertDialog.Builder(MainActivity.this)
-			.setTitle("ŒŸõ”ÍˆÍ‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢")
+			.setTitle("æ¤œç´¢ç¯„å›²ã‚’é¸æŠã—ã¦ãã ã•ã„")
 			.setItems(itemslist, new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
@@ -190,7 +189,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 					}
 				}
 			})
-			.setNegativeButton("ƒLƒƒƒ“ƒZƒ‹", new DialogInterface.OnClickListener() {
+			.setNegativeButton("ã‚­ãƒ£ãƒ³ã‚»ãƒ«", new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int id) {
 			        dialog.cancel();
 			   }
@@ -232,11 +231,11 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		switch(v.getId()) {
 		case R.id.bt_hotel_search:		
 			mMap.clear();
-			// Œ»İ’nü•Ó‚Ìƒzƒeƒ‹‚ğŒŸõ‚·‚éB
+			// ç¾åœ¨åœ°å‘¨è¾ºã®ãƒ›ãƒ†ãƒ«ã‚’æ¤œç´¢ã™ã‚‹ã€‚
 			queryInfo();
 			break;
 		case R.id.bt_hotel_search_detail:
-			// i‚è‚İŒŸõ—p‚Ì‰æ–Ê‚ğ•\¦‚·‚éB
+			// çµã‚Šè¾¼ã¿æ¤œç´¢ç”¨ã®ç”»é¢ã‚’è¡¨ç¤ºã™ã‚‹ã€‚
 			break;
 		default:
 			break;
@@ -298,7 +297,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 				iArrived = mDatabaseObject.readArrivedData(mTargetList.get(iHotel).getNo());
 				mDatabaseObject.GeoSearcherDBClose();
 			}
-			if (iArrived != 1) {
+//			if (iArrived != 1) {
 				LatLng latlng = new LatLng(mTargetList.get(iHotel).getLocation().getLatitude(), mTargetList.get(iHotel).getLocation().getLongitude());
 				String title = mTargetList.get(iHotel).getName();
 				BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
@@ -306,21 +305,21 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 				
 				options.position(latlng).title(title).icon(icon).snippet(mTargetList.get(iHotel).getAddress());
 				mMap.addMarker(options);
-			}
+//			}
 		}
 		mMap.setOnInfoWindowClickListener(this);
 	}
 
 	@Override
 	public void onInfoWindowClick(Marker marker) {
-		// ƒzƒeƒ‹‚ÌZŠ‚©‚çmTargetList‚ÌƒCƒ“ƒfƒbƒNƒX‚ğŒŸõ
+		// ãƒ›ãƒ†ãƒ«ã®ä½æ‰€ã‹ã‚‰mTargetListã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ¤œç´¢
 		int index;
 		for (index = 0; index < mTargetList.size(); index++) {
 			if(marker.getSnippet().equals(mTargetList.get(index).getAddress())) break;
 		}
 		
 		final int iTargetListIndex = index;
-		final CharSequence[] items = {"“d˜b‚Å—\–ñ","ƒ‹[ƒg•\¦", "ƒƒ‚", "•Â‚¶‚é"};
+		final CharSequence[] items = {"é›»è©±ã§äºˆç´„","ãƒ«ãƒ¼ãƒˆè¡¨ç¤º", "ãƒ¡ãƒ¢", "é–‰ã˜ã‚‹"};
 		
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(marker.getTitle());
@@ -329,19 +328,21 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch(which) {
-				case 0:	// “d˜b
+				case 0:	// é›»è©±
 					String strTelphoneNo = "tel:" + mTargetList.get(iTargetListIndex).getTelephoneNo();
 					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(strTelphoneNo));
 					startActivity(intent);
 					break;
-				case 1:	// ƒ‹[ƒg•\¦
+				case 1:	// ãƒ«ãƒ¼ãƒˆè¡¨ç¤º
 					DirectionsData dd = mDirectionsList.get(iTargetListIndex);
-					Toast.makeText(MainActivity.this, dd.getCopyright(), Toast.LENGTH_SHORT).show();  // ƒeƒXƒg—p
+					Toast.makeText(MainActivity.this, dd.getCopyright(), Toast.LENGTH_SHORT).show();  // ãƒ†ã‚¹ãƒˆç”¨
 					break;
-				case 2: // ƒƒ‚
-					String[] strInfo = {mTargetList.get(iTargetListIndex).getNo(),"0"};
+				case 2: // ãƒ¡ãƒ¢
+					String[] strInfo = {mTargetList.get(iTargetListIndex).getNo(),"0", ""};
+					String strHotelId = mTargetList.get(iTargetListIndex).getNo();
 					mDatabaseObject.GeoSearcherDBOpen();
-					if (mDatabaseObject.readArrivedData(mTargetList.get(iTargetListIndex).getNo()) != 0) strInfo[1] = "1";
+					if (mDatabaseObject.readArrivedData(strHotelId) != 0) strInfo[1] = "1";
+					strInfo[2] = mDatabaseObject.readMemoData(strHotelId);
 					mDatabaseObject.GeoSearcherDBClose();
 					Intent intentToSettingWindow = new Intent();
 					intentToSettingWindow.setClassName("personal.john.app", "personal.john.app.MemoWindow");

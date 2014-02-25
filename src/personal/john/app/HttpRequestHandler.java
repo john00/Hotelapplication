@@ -31,10 +31,10 @@ public class HttpRequestHandler {
 		try {
 			mHttpResponse = mHttpClient.execute(new HttpGet(uri));
 		} catch (ClientProtocolException e) {
-			// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 			e.printStackTrace();
 		}
 		
@@ -52,10 +52,10 @@ public class HttpRequestHandler {
 			try {
 				sJSONData = EntityUtils.toString(httpEntity);
 			} catch (ParseException e) {
-				// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+				// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+				// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 				e.printStackTrace();
 			}
 	        finally {
@@ -63,7 +63,7 @@ public class HttpRequestHandler {
 	                httpEntity.consumeContent();
 	            }
 	            catch (IOException e) {
-	                //—áŠOˆ—
+	                //ä¾‹å¤–å‡¦ç†
 	            }
 	        }
 		}

@@ -18,14 +18,14 @@ public class DirectionsData {
 	private final static String path = "/maps/api/directions/json";
 	private String mRequestUri;
 
-    private String mCopyright;					// ƒRƒs[ƒ‰ƒCƒg
-    private ArrayList<String> mWarningList;		// Œx•¶
+    private String mCopyright;					// ã‚³ãƒ”ãƒ¼ãƒ©ã‚¤ãƒˆ
+    private ArrayList<String> mWarningList;		// è­¦å‘Šæ–‡
     
-    private String mDistance;					// ‹——£
-    private String mDuration;					// Š—vŠÔ
+    private String mDistance;					// è·é›¢
+    private String mDuration;					// æ‰€è¦æ™‚é–“
     
-    private ArrayList<LatLng> mStartLatLngList;	// ŠeƒXƒeƒbƒv‚ÌƒXƒ^[ƒgˆÊ’u‹L˜^—p
-    private ArrayList<LatLng> mEndLatLngList;	// ŠeƒXƒeƒbƒv‚ÌƒGƒ“ƒhˆÊ’u‹L˜^—p
+    private ArrayList<LatLng> mStartLatLngList;	// å„ã‚¹ãƒ†ãƒƒãƒ—ã®ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®è¨˜éŒ²ç”¨
+    private ArrayList<LatLng> mEndLatLngList;	// å„ã‚¹ãƒ†ãƒƒãƒ—ã®ã‚¨ãƒ³ãƒ‰ä½ç½®è¨˜éŒ²ç”¨
 	
 	public DirectionsData() {
 	    mCopyright = "";
@@ -94,7 +94,7 @@ public class DirectionsData {
 				}
 			}
 			
-			// ŠeƒXƒeƒbƒv‚ÌƒXƒ^[ƒgˆÊ’u‚ÆƒGƒ“ƒhˆÊ’u‚ğæ“¾
+			// å„ã‚¹ãƒ†ãƒƒãƒ—ã®ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®ã¨ã‚¨ãƒ³ãƒ‰ä½ç½®ã‚’å–å¾—
 			for(int i = 0; i < stepsArray.length(); i++) {
 				JSONObject stepObject = stepsArray.getJSONObject(i);
 				if(stepObject.has("start_location")) {
@@ -109,7 +109,7 @@ public class DirectionsData {
 				}
 			}
 		} catch (JSONException e) {
-			// TODO ©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 			e.printStackTrace();
 		}
 	}

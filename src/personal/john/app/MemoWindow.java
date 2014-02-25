@@ -7,26 +7,30 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 public class MemoWindow extends Activity implements OnClickListener{
-	// ‰æ–ÊƒIƒuƒWƒFƒNƒg
+	// ç”»é¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	private CheckBox mChkboxArrived;
-	// DB—pƒIƒuƒWƒFƒNƒg
+	private EditText mEditText;
+	// DBç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	private GeoSearcherDB mDatabaseObject;
-	// ƒƒCƒ“‰æ–Êî•ñ
+	// ãƒ¡ã‚¤ãƒ³ç”»é¢æƒ…å ±
 	private String mHotelID = "";
 	private int mArrived = 0;
+	private String mMemo = "";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memo);
         
-		// DBì¬
+		// DBä½œæˆ
 		mDatabaseObject = new GeoSearcherDB(this);
  
-		// ‰æ–ÊƒIƒuƒWƒFƒNƒgì¬
+		// ç”»é¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
 		mChkboxArrived = (CheckBox)findViewById(R.id.checkbox_id);
+		mEditText = (EditText)findViewById(R.id.et_memo);
 		Button btRegist = (Button)findViewById(R.id.bt_memo_regist);
 		btRegist.setOnClickListener(this);
         
@@ -35,8 +39,10 @@ public class MemoWindow extends Activity implements OnClickListener{
             String[] strCheck = intent.getStringArrayExtra("personal.john.app.Arrived");
             mHotelID = strCheck[0];
             mArrived = Integer.parseInt(strCheck[1]);
+            mMemo = strCheck[2];
             		
             if (mArrived == 1) mChkboxArrived.setChecked(true);
+            mEditText.setText(mMemo);
         }
     }
 
@@ -45,14 +51,17 @@ public class MemoWindow extends Activity implements OnClickListener{
 		switch(v.getId()) {
 		case R.id.bt_memo_regist:
 			int iArraived = 0;
+			String strMemo = "";
+			
 			if (mChkboxArrived.isChecked()) iArraived = 1;
+			strMemo = mEditText.getText().toString();
 			
 			mDatabaseObject.GeoSearcherDBOpen();
 			mDatabaseObject.writeArrivedData(mHotelID, iArraived);
+			mDatabaseObject.writeMemoData(mHotelID, strMemo);
 			mDatabaseObject.GeoSearcherDBClose();
 			this.finish();
 		}
 	}
     
 }
-

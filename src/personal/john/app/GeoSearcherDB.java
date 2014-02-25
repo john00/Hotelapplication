@@ -14,12 +14,12 @@ public class GeoSearcherDB {
 	/* DB */
 	static final String DB_NAME = "GeoSearcherDB.db";
 	static final String DB_TABLE = "GeoTable";
-	static final String DB_HOTELNAME = "HotelName";
+	static final String DB_HOTELID = "HotelID";
 	static final String DB_ARRIVED = "Arrived";
 	static final String DB_MEMO = "memo";
-	static final int DB_VERSION = 2;
+	static final int DB_VERSION = 1;
 	static final String CREATE_TABLE = "create table if not exists " + DB_TABLE +
-										"(" + DB_HOTELNAME + " text primary key, " + DB_ARRIVED + "," + DB_MEMO + ")";
+										"(" + DB_HOTELID + " text primary key, " + DB_ARRIVED + "," + DB_MEMO + ")";
 	private SQLiteDatabase mDb;
 
 	public GeoSearcherDB(Context context) {
@@ -43,29 +43,29 @@ public class GeoSearcherDB {
 		return mDb;
 	}
 
-	// Šù–KE–¢–K‘‚«‚İƒƒ\ƒbƒh
+	// æ—¢è¨ªãƒ»æœªè¨ªæ›¸ãè¾¼ã¿ãƒ¡ã‚½ãƒƒãƒ‰
 	public void writeArrivedData(String strHotelID, int iArraived) {
 		ContentValues values = new ContentValues();
-		// ‘‚«‚İƒf[ƒ^ì¬
-		values.put(DB_HOTELNAME, strHotelID);
+		// æ›¸ãè¾¼ã¿ãƒ‡ãƒ¼ã‚¿ä½œæˆ
+		values.put(DB_HOTELID, strHotelID);
 		values.put(DB_ARRIVED, iArraived);
 		
-		// ƒf[ƒ^‘‚«‚İiUpdatej
-		int iRet = mDb.update(DB_TABLE, values, null, null);
+		// ãƒ‡ãƒ¼ã‚¿æ›¸ãè¾¼ã¿ï¼ˆUpdateï¼‰
+		int iRet = mDb.update(DB_TABLE, values, DB_HOTELID + "=" + strHotelID, null);
 		if (iRet == 0) {
 			mDb.insert(DB_TABLE, null, values);
 		}
 	}
 	
-	// Šù–KE–¢–K“Ç‚İ‚İƒƒ\ƒbƒh
+	// æ—¢è¨ªãƒ»æœªè¨ªèª­ã¿è¾¼ã¿ãƒ¡ã‚½ãƒƒãƒ‰
 	public int readArrivedData(String strHotelID){
 		final int RET_ARRIVED = 1;
 		final int RET_NOT_ARRIVED = 0;
-		// ƒJ[ƒ\ƒ‹ì¬
-		Cursor cursor = mDb.query(DB_TABLE, new String[]{DB_HOTELNAME, DB_ARRIVED},
-				DB_HOTELNAME + "=" + strHotelID, null, null, null, null);
+		// ã‚«ãƒ¼ã‚½ãƒ«ä½œæˆ
+		Cursor cursor = mDb.query(DB_TABLE, new String[]{DB_HOTELID, DB_ARRIVED},
+				DB_HOTELID + "=" + strHotelID, null, null, null, null);
 		
-		// ƒqƒbƒgƒŒƒR[ƒh‚ª 0Œ‚Ìê‡
+		// ãƒ’ãƒƒãƒˆãƒ¬ã‚³ãƒ¼ãƒ‰ãŒ 0ä»¶ã®å ´åˆ
 		if (cursor.getCount() <= 0) {
 			cursor.close();
 			return RET_NOT_ARRIVED;
@@ -73,7 +73,7 @@ public class GeoSearcherDB {
 
 		cursor.moveToFirst();
 		
-		// ƒqƒbƒgƒŒƒR[ƒh‚ª‚ ‚éê‡
+		// ãƒ’ãƒƒãƒˆãƒ¬ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚‹å ´åˆ
 		int iRet = cursor.getInt(1);
 		cursor.close();
 		
@@ -82,26 +82,25 @@ public class GeoSearcherDB {
 		return RET_ARRIVED;
 	}
 
-	// ƒƒ‚‘‚«‚İƒƒ\ƒbƒh
+	// ãƒ¡ãƒ¢æ›¸ãè¾¼ã¿ãƒ¡ã‚½ãƒƒãƒ‰
 	public void writeMemoData(String strHotelID, String strMemo) {
 		ContentValues values = new ContentValues();
-		// ‘‚«‚İƒf[ƒ^ì¬
-		values.put(DB_HOTELNAME, strHotelID);
+		// æ›¸ãè¾¼ã¿ãƒ‡ãƒ¼ã‚¿ä½œæˆ
 		values.put(DB_MEMO, strMemo);
 		
-		// ƒf[ƒ^‘‚«‚İiUpdatej
-		int iRet = mDb.update(DB_TABLE, values, null, null);
+		// ãƒ‡ãƒ¼ã‚¿æ›¸ãè¾¼ã¿ï¼ˆUpdateï¼‰
+		int iRet = mDb.update(DB_TABLE, values, DB_HOTELID + "=" + strHotelID, null);
 		if (iRet == 0) {
 			mDb.insert(DB_TABLE, null, values);
 		}
 	}
-	// ƒƒ‚“Ç‚İ‚İƒƒ\ƒbƒh
+	// ãƒ¡ãƒ¢èª­ã¿è¾¼ã¿ãƒ¡ã‚½ãƒƒãƒ‰
 	public String readMemoData(String strHotelID){
-		// ƒJ[ƒ\ƒ‹ì¬
-		Cursor cursor = mDb.query(DB_TABLE, new String[]{DB_HOTELNAME, DB_MEMO},
-				DB_HOTELNAME + "=" + strHotelID, null, null, null, null);
+		// ã‚«ãƒ¼ã‚½ãƒ«ä½œæˆ
+		Cursor cursor = mDb.query(DB_TABLE, new String[]{DB_HOTELID, DB_MEMO},
+				DB_HOTELID + "=" + strHotelID, null, null, null, null);
 		
-		// ƒqƒbƒgƒŒƒR[ƒh‚ª 0Œ‚Ìê‡
+		// ãƒ’ãƒƒãƒˆãƒ¬ã‚³ãƒ¼ãƒ‰ãŒ 0ä»¶ã®å ´åˆ
 		if (cursor.getCount() <= 0) {
 			cursor.close();
 			return "";
@@ -109,7 +108,7 @@ public class GeoSearcherDB {
 
 		cursor.moveToFirst();
 		
-		// ƒqƒbƒgƒŒƒR[ƒh‚ª‚ ‚éê‡
+		// ãƒ’ãƒƒãƒˆãƒ¬ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚‹å ´åˆ
 		String strRet = cursor.getString(1);
 		cursor.close();
 		
