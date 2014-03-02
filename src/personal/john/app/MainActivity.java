@@ -1,6 +1,8 @@
 package personal.john.app;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -22,18 +24,22 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -54,8 +60,13 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// ActionBar
+	    getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_main);
+		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		
 		mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
     	
 		if(mLocationManager != null) {
@@ -89,8 +100,8 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		// ボタン作成
 		Button btHotelSearch = (Button) findViewById(R.id.bt_hotel_search);
 		btHotelSearch.setOnClickListener(this);
-		Button btHotelSearchDetail = (Button) findViewById(R.id.bt_hotel_search_detail);
-		btHotelSearchDetail.setOnClickListener(this);
+		Button btListView = (Button) findViewById(R.id.bt_listview);
+		btListView.setOnClickListener(this);
 
 		/* Rakuten Client */
 		try {
@@ -153,6 +164,10 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
+		MenuItem mi = menu.add("test");
+        // アイコンを設定
+		mi.setIcon(android.R.drawable.ic_menu_help);
+		mi.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		return true;
 	}
 
@@ -234,8 +249,19 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			// 現在地周辺のホテルを検索する。
 			queryInfo();
 			break;
-		case R.id.bt_hotel_search_detail:
-			// 絞り込み検索用の画面を表示する。
+		case R.id.bt_listview:
+			// リスト表示用の画面を表示する。
+			ArrayList<String> strList = new ArrayList<String>();
+			
+			for (int iTargetCount = 0; iTargetCount < mTargetList.size(); iTargetCount++) {
+				strList.add(mTargetList.get(iTargetCount).getName());
+			}
+
+			Intent intentToResultListView = new Intent(MainActivity.this, ResultListView.class);
+			intentToResultListView.putStringArrayListExtra("personal.john.app.list", strList);
+			intentToResultListView.setAction(Intent.ACTION_VIEW);
+			
+			startActivity(intentToResultListView);
 			break;
 		default:
 			break;
@@ -334,8 +360,17 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 					startActivity(intent);
 					break;
 				case 1:	// ルート表示
-					DirectionsData dd = mDirectionsList.get(iTargetListIndex);
-					Toast.makeText(MainActivity.this, dd.getCopyright(), Toast.LENGTH_SHORT).show();  // テスト用
+					String url = "http://maps.google.com/maps?dirflg=w";
+					url += "&saddr=" + mMap.getMyLocation().getLatitude() + "," + 
+					       mMap.getMyLocation().getLongitude() + "(現在地)";
+					url += "&daddr=" + mTargetList.get(iTargetListIndex).getLatitude() + "," + 
+					       mTargetList.get(iTargetListIndex).getLongitude() + "(目的地)";
+
+					Intent intentRote = new Intent();
+					intentRote.setAction(Intent.ACTION_VIEW);
+					intentRote.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity");
+					intentRote.setData(Uri.parse(url));
+					startActivity(intentRote);
 					break;
 				case 2: // メモ
 					String[] strInfo = {mTargetList.get(iTargetListIndex).getNo(),"0", ""};

@@ -23,7 +23,7 @@
         android:text="@string/bt_lb_hotel_search" />
 
     <Button
-        android:id="@+id/bt_hotel_search_detail"
+        android:id="@+id/bt_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/map"

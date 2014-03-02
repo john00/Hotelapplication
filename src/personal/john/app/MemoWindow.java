@@ -13,6 +13,7 @@ public class MemoWindow extends Activity implements OnClickListener{
 	// 画面オブジェクト
 	private CheckBox mChkboxArrived;
 	private EditText mEditText;
+	private Button mButtonRegist;
 	// DB用オブジェクト
 	private GeoSearcherDB mDatabaseObject;
 	// メイン画面情報
@@ -31,8 +32,8 @@ public class MemoWindow extends Activity implements OnClickListener{
 		// 画面オブジェクト作成
 		mChkboxArrived = (CheckBox)findViewById(R.id.checkbox_id);
 		mEditText = (EditText)findViewById(R.id.et_memo);
-		Button btRegist = (Button)findViewById(R.id.bt_memo_regist);
-		btRegist.setOnClickListener(this);
+		mButtonRegist = (Button)findViewById(R.id.bt_memo_regist);
+		mButtonRegist.setOnClickListener(this);
         
         Intent intent = getIntent();
         if(intent != null){
