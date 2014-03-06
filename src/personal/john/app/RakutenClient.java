@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.app.Activity;
 import android.util.Log;
 
 public class RakutenClient {
@@ -33,6 +34,7 @@ public class RakutenClient {
 	private RakutenClientReceiver mRakutenClientReceiver = null;
 	private HotelHandler mHotelHandler = null;
 	private String mRecordCount = "0";
+	private Activity mActivity = null;
 	
 
 	public static final int ERROR_GENERAL = 1;
@@ -49,13 +51,14 @@ public class RakutenClient {
 	private double mMyLongitude = 0;
 	private double mRange;
 
-	public RakutenClient(RakutenClientReceiver receiver)
+	public RakutenClient(RakutenClientReceiver receiver, Activity activity)
 			throws ParserConfigurationException, SAXException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		mParser = factory.newSAXParser();
 		mRakutenClientReceiver = receiver;
 		mHotelHandler = new HotelHandler();
 		mRange = 1;
+		mActivity = activity;
 	}
 
 	public void requestHotel()
@@ -74,6 +77,11 @@ public class RakutenClient {
 				+ LATITUDE + latitude + LONGITUDE + longitude + SEARCHRADIUS
 				+ range + DATUMTYPE);
 		mParser.parse(request, mHotelHandler);
+	}
+	
+	public void queryInfo(){
+		RakutenClientExecuteThread rcExeThread = new RakutenClientExecuteThread(mActivity);
+		rcExeThread.execute(this);
 	}
 
 	public void setRecordCount(String recordcount) {

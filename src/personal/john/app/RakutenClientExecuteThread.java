@@ -4,15 +4,17 @@ import java.io.IOException;
 
 import org.xml.sax.SAXException;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 
 public class RakutenClientExecuteThread extends AsyncTask<RakutenClient, Void, Void> {
-	private MainActivity mActivity ;
+	private Activity mActivity = null;
     RakutenClient mRc;
 
-    public RakutenClientExecuteThread(MainActivity activity) {
+    public RakutenClientExecuteThread(Activity activity) {
         // 呼び出し元のアクティビティ
     	mActivity = activity;
     }
@@ -33,7 +35,7 @@ public class RakutenClientExecuteThread extends AsyncTask<RakutenClient, Void, V
 
 	@Override
 	protected void onPostExecute(Void result) {
-		mActivity.updateMarker();
+		// 周辺にホテルがない場合
 		if (0 == mRc.getRecordCount()) {
 			new AlertDialog.Builder(mActivity)
 			.setTitle("検索結果なし")
@@ -44,6 +46,15 @@ public class RakutenClientExecuteThread extends AsyncTask<RakutenClient, Void, V
 			   }
 			})
 			.show();
+		}
+		
+		// マップ上のマーカーを更新(MainActivity)
+		if (mActivity.getClass().getName().matches(mActivity.getString(R.string.name_mainactivity))) {
+			((MainActivity) mActivity).updateMarker();
+		
+		// リスト内容作成(ResultListView)
+		} else if (mActivity.getClass().getName().matches(mActivity.getString(R.string.name_resultlistview))){
+			((ResultListView) mActivity).makeList();
 		}
 	}
 }
