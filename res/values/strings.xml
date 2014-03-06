@@ -12,5 +12,7 @@
     <string name="label_Arrive">行ったことがある</string>
     <string name="bt_lb_memo_regist">登録</string>
     <string name="bt_return">戻る</string>
+    <string name="name_mainactivity">personal.john.app.MainActivity</string>
+    <string name="name_resultlistview">personal.john.app.ResultListView</string>
 
 </resources>

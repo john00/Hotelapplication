@@ -1,9 +1,6 @@
 package personal.john.app;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -24,13 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +34,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -105,7 +99,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
 		/* Rakuten Client */
 		try {
-			mRakutenClient = new RakutenClient(this);
+			mRakutenClient = new RakutenClient(this, this);
 		} catch (ParserConfigurationException e1) {
 			e1.printStackTrace();
 		} catch (SAXException e1) {
@@ -134,7 +128,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+		updateMarker();
 	}
 
 	@Override
@@ -164,10 +158,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem mi = menu.add("test");
-        // アイコンを設定
-		mi.setIcon(android.R.drawable.ic_menu_help);
-		mi.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		return true;
 	}
 
@@ -247,18 +237,16 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		case R.id.bt_hotel_search:		
 			mMap.clear();
 			// 現在地周辺のホテルを検索する。
-			queryInfo();
+			mRakutenClient.setmMyLatitute(mMap.getMyLocation().getLatitude());
+			mRakutenClient.setmMyLongitude(mMap.getMyLocation().getLongitude());
+			mRakutenClient.queryInfo();
 			break;
 		case R.id.bt_listview:
 			// リスト表示用の画面を表示する。
-			ArrayList<String> strList = new ArrayList<String>();
+			double[] myLocation = {mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude()};
 			
-			for (int iTargetCount = 0; iTargetCount < mTargetList.size(); iTargetCount++) {
-				strList.add(mTargetList.get(iTargetCount).getName());
-			}
-
 			Intent intentToResultListView = new Intent(MainActivity.this, ResultListView.class);
-			intentToResultListView.putStringArrayListExtra("personal.john.app.list", strList);
+			intentToResultListView.putExtra("personal.john.app.list", myLocation);
 			intentToResultListView.setAction(Intent.ACTION_VIEW);
 			
 			startActivity(intentToResultListView);
@@ -296,16 +284,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		default:
 			break;
 		}
-	}
-	
-	private void queryInfo(){
-		RakutenClientExecuteThread rcExeThread = new RakutenClientExecuteThread(this);
-		
-		mRakutenClient.setmMyLatitute(mMap.getMyLocation().getLatitude());
-		mRakutenClient.setmMyLongitude(mMap.getMyLocation().getLongitude());
-		
-		rcExeThread.execute(mRakutenClient);
-		
 	}
 
 	public void updateMarker() {
