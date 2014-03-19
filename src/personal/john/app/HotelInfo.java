@@ -1,128 +1,139 @@
+
 package personal.john.app;
 
 import android.location.Location;
 
 public class HotelInfo {
-	private Location mLocation = null;
-	private String mNo = null;
-	private String mName = null;
-	private String mKanaName = null;
-	private String mInfomationUrl = null;
-	private String mPlanListUrl = null;
-	private String mLatitude = null;
-	private String mLongitude = null;
-	private String mTelephoneNo = null;
-	private String mSpecial = null;
-	private String mAddress1 = null;
-	private String mAddress2 = null;
+    private Location mLocation = null;
 
+    private String mNo = null;
 
-	public HotelInfo(){
-		Location location = new Location("RakutenWebService");
-		mLocation = location;
-	}
+    private String mName = null;
 
-	public HotelInfo(final Location location, final String name){
-		mLocation = location;
-		mName = name;
-	}
+    private String mKanaName = null;
 
-	public void setNo(String no) {
-		mNo = no;
-	}
+    private String mInfomationUrl = null;
 
-	public String getNo(){
-		return mNo;
-	}
+    private String mPlanListUrl = null;
 
-	public void setName(String name) {
-		mName = name;
-	}
+    private String mLatitude = null;
 
-	public String getName(){
-		return mName;
-	}
+    private String mLongitude = null;
 
-	public void setKanaName(String kananame) {
-		mKanaName = kananame;
-	}
+    private String mTelephoneNo = null;
 
-	public String getKanaName(){
-		return mKanaName;
-	}
+    private String mSpecial = null;
 
-	public void setLatitude(String latitude) {
-		mLatitude = latitude;
-	}
+    private String mAddress1 = null;
 
-	public String getLatitude(){
-		return mLatitude;
-	}
+    private String mAddress2 = null;
 
-	public void setLongitude(String longitude) {
-		mLongitude = longitude;
-	}
+    public HotelInfo() {
+        Location location = new Location("RakutenWebService");
+        mLocation = location;
+    }
 
-	public String getLongitude(){
-		return mLongitude;
-	}
+    public HotelInfo(final Location location, final String name) {
+        mLocation = location;
+        mName = name;
+    }
 
-	public Location getLocation(){
-		mLocation.setAltitude(0);
-		mLocation.setLatitude(Location.convert(mLatitude));
-		mLocation.setLongitude(Location.convert(mLongitude));
-		return mLocation;
-	}
+    public void setNo(String no) {
+        mNo = no;
+    }
 
-	public void setInfomationUrl(String infomationurl) {
-		mInfomationUrl = infomationurl;
-	}
+    public String getNo() {
+        return mNo;
+    }
 
-	public String getInfomationUrl(){
-		return mInfomationUrl;
-	}
+    public void setName(String name) {
+        mName = name;
+    }
 
-	public void setPlanListUrl(String planlisturl) {
-		mPlanListUrl = planlisturl;
-	}
+    public String getName() {
+        return mName;
+    }
 
-	public String getPlanListUrl(){
-		return mPlanListUrl;
-	}
+    public void setKanaName(String kananame) {
+        mKanaName = kananame;
+    }
 
-	public void setTelephoneNo(String telephoneno) {
-		mTelephoneNo = telephoneno;
-	}
+    public String getKanaName() {
+        return mKanaName;
+    }
 
-	public String getTelephoneNo(){
-		return mTelephoneNo;
-	}
+    public void setLatitude(String latitude) {
+        mLatitude = latitude;
+    }
 
-	public String toString(){
-		if(mLocation != null){
-			return new String("Name:"+mName+",Location:"+mLocation.toString());
-		}else{
-			return new String("Name:"+mName+",Location:nodata");
-		}
-	}
+    public String getLatitude() {
+        return mLatitude;
+    }
 
-	public void setSpecial(String special) {
-		mSpecial = special;
-	}
+    public void setLongitude(String longitude) {
+        mLongitude = longitude;
+    }
 
-	public String getSpecial() {
-		return mSpecial;
-	}
+    public String getLongitude() {
+        return mLongitude;
+    }
 
-	public void setAddress1(String address1) {
-		mAddress1 = address1;
-	}
+    public Location getLocation() {
+        mLocation.setAltitude(0);
+        mLocation.setLatitude(Location.convert(mLatitude));
+        mLocation.setLongitude(Location.convert(mLongitude));
+        return mLocation;
+    }
 
-	public void setAddress2(String address2) {
-		mAddress2 = address2;
-	}
+    public void setInfomationUrl(String infomationurl) {
+        mInfomationUrl = infomationurl;
+    }
 
-	public String getAddress() {
-		return mAddress1 + mAddress2;
-	}
+    public String getInfomationUrl() {
+        return mInfomationUrl;
+    }
+
+    public void setPlanListUrl(String planlisturl) {
+        mPlanListUrl = planlisturl;
+    }
+
+    public String getPlanListUrl() {
+        return mPlanListUrl;
+    }
+
+    public void setTelephoneNo(String telephoneno) {
+        mTelephoneNo = telephoneno;
+    }
+
+    public String getTelephoneNo() {
+        return mTelephoneNo;
+    }
+
+    public String toString() {
+        if (mLocation != null) {
+            return new String("Name:" + mName + ",Location:" + mLocation.toString());
+        } else {
+            return new String("Name:" + mName + ",Location:nodata");
+        }
+    }
+
+    public void setSpecial(String special) {
+        mSpecial = special;
+    }
+
+    public String getSpecial() {
+        return mSpecial;
+    }
+
+    public void setAddress1(String address1) {
+        mAddress1 = address1;
+    }
+
+    public void setAddress2(String address2) {
+        mAddress2 = address2;
+    }
+
+    public String getAddress() {
+        return mAddress1 + mAddress2;
+    }
 }

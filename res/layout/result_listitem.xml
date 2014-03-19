@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/listContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:orientation="horizontal"
+        android:background="#99ccff"
         android:baselineAligned="true"
-        android:background="#99ccff" >
-        
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
         <ImageView
             android:id="@+id/listImg"
             android:layout_width="50dp"
@@ -21,7 +21,7 @@
             android:src="@drawable/icon" />
 
         <TextView
-            android:id="@+id/listMessage" 
+            android:id="@+id/listMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000" />
