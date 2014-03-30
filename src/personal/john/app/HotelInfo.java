@@ -142,7 +142,7 @@ public class HotelInfo {
     public void setDistance(double mylat, double mylon, double destlat, double destlon) {
         float[] fDistance = new float[1];
         Location.distanceBetween(mylat, mylon, destlat, destlon, fDistance);
-        mDistance = fDistance[1];
+        mDistance = fDistance[0];
     }
 
     public float getDistance() {

@@ -30,14 +30,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements LocationListener, OnClickListener,
+public class MainActivity extends FragmentActivity implements LocationListener,
         OnInfoWindowClickListener, LocationSource, RakutenClientReceiver {
 
     private GoogleMap mMap;
@@ -100,12 +97,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
             mMap.moveCamera(iniCamera);
         }
 
-        // ボタン作成
-        Button btHotelSearch = (Button) findViewById(R.id.bt_hotel_search);
-        btHotelSearch.setOnClickListener(this);
-        Button btListView = (Button) findViewById(R.id.bt_listview);
-        btListView.setOnClickListener(this);
-
         /* Rakuten Client */
         try {
             mRakutenClient = new RakutenClient(this, this);
@@ -132,6 +123,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
         if (mLocationManager != null) {
             mMap.setMyLocationEnabled(true);
         }
+
     }
 
     @Override
@@ -178,6 +170,21 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
         };
 
         switch (item.getItemId()) {
+            case R.id.item_search:
+                searchHotel();
+                break;
+            case R.id.item_list:
+                // リスト表示用の画面を表示する。
+                double[] myLocation = {
+                        mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude()
+                };
+
+                Intent intentToResultListView = new Intent(MainActivity.this, ResultListView.class);
+                intentToResultListView.putExtra("personal.john.app.list", myLocation);
+                intentToResultListView.setAction(Intent.ACTION_VIEW);
+
+                startActivity(intentToResultListView);
+                break;
             case R.id.item_range:
                 // ホテルの検索範囲設定
                 new AlertDialog.Builder(MainActivity.this).setTitle("検索範囲を選択してください")
@@ -203,6 +210,8 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
                                     default:
                                         mRakutenClient.setSearchRange(1);
                                 }
+                                
+                                searchHotel();
                             }
                         }).setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int id) {
@@ -238,33 +247,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
     @Override
     public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_hotel_search:
-                mMap.clear();
-                // 現在地周辺のホテルを検索する。
-                mRakutenClient.setmMyLatitute(mMap.getMyLocation().getLatitude());
-                mRakutenClient.setmMyLongitude(mMap.getMyLocation().getLongitude());
-                mRakutenClient.queryInfo();
-                break;
-            case R.id.bt_listview:
-                // リスト表示用の画面を表示する。
-                double[] myLocation = {
-                        mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude()
-                };
-
-                Intent intentToResultListView = new Intent(MainActivity.this, ResultListView.class);
-                intentToResultListView.putExtra("personal.john.app.list", myLocation);
-                intentToResultListView.setAction(Intent.ACTION_VIEW);
-
-                startActivity(intentToResultListView);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -307,23 +289,28 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
         for (int iHotel = 0; iHotel < size; iHotel++) {
             int iArrived = 0;
+            BitmapDescriptor icon;
+            MarkerOptions options = new MarkerOptions();
+
             if (mTargetList.get(iHotel).getNo() != "") {
                 mDatabaseObject.openGeoSearcherDB();
                 iArrived = mDatabaseObject.readArrivedData(mTargetList.get(iHotel).getNo());
                 mDatabaseObject.closeGeoSearcherDB();
             }
-            // if (iArrived != 1) {
+
+            if (iArrived != 1) {
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+            } else {
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+            }
+
             LatLng latlng = new LatLng(mTargetList.get(iHotel).getLocation().getLatitude(),
                     mTargetList.get(iHotel).getLocation().getLongitude());
             String title = mTargetList.get(iHotel).getName();
-            BitmapDescriptor icon = BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-            MarkerOptions options = new MarkerOptions();
 
             options.position(latlng).title(title).icon(icon)
                     .snippet(mTargetList.get(iHotel).getAddress());
             mMap.addMarker(options);
-            // }
         }
         mMap.setOnInfoWindowClickListener(this);
     }
@@ -398,6 +385,14 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 
         dialog.show();
 
+    }
+    
+    public void searchHotel() {
+        mMap.clear();
+        // 現在地周辺のホテルを検索する。
+        mRakutenClient.setmMyLatitute(mMap.getMyLocation().getLatitude());
+        mRakutenClient.setmMyLongitude(mMap.getMyLocation().getLongitude());
+        mRakutenClient.queryInfo();
     }
 
 }

@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 public class ResultListView extends Activity implements OnClickListener, RakutenClientReceiver {
@@ -34,8 +32,6 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
     private GeoSearcherDB mDatabaseObject;
 
     // 画面パーツ
-    Button mReturnButton;
-
     ListView mListView;
 
     ArrayList<HotelInfo> mTargetList = null;
@@ -57,8 +53,6 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
             e.printStackTrace();
         }
 
-        mReturnButton = (Button) findViewById(R.id.bt_return);
-        mReturnButton.setOnClickListener(this);
         mListView = (ListView) findViewById(R.id.listview);
 
         Intent intent = getIntent();
@@ -94,7 +88,9 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
 
         switch (item.getItemId()) {
             case R.id.listitem_sort:
-                //
+                //　リストの並べ替え用ダイアログを表示し、選択に応じた並べ替えを行う。
+                // ホテル名：ホテル名で並び替え
+                // 距離：現在地からの距離で並び替え（近い順）
                 new AlertDialog.Builder(ResultListView.this)
                         .setTitle(ResultListView.this.getString(R.string.menulistitem_sort))
                         .setItems(itemslist, new DialogInterface.OnClickListener() {
@@ -102,21 +98,13 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:
-                                        Collections.sort(mTargetList, new MyComparator(MyComparator.ASC, MyComparator.MODE_HOTELNAME));
+                                        Collections.sort(mTargetList, new MyComparator(
+                                                MyComparator.ASC, MyComparator.MODE_HOTELNAME));
                                         makeList();
                                         break;
                                     case 1:
-                                        for (int listIndex = 0; listIndex < mTargetList.size(); listIndex++) {
-                                            double destLat = Double.valueOf(mTargetList.get(
-                                                    listIndex).getLatitude());
-                                            double destLon = Double.valueOf(mTargetList.get(
-                                                    listIndex).getLongitude());
-                                            mTargetList.get(listIndex).setDistance(
-                                                    mRakutenClient.getmMyLatitute(),
-                                                    mRakutenClient.getmMyLongitude(), destLat,
-                                                    destLon);
-                                        }
-                                        Collections.sort(mTargetList, new MyComparator(MyComparator.ASC, MyComparator.MODE_DISTANCE));
+                                        Collections.sort(mTargetList, new MyComparator(
+                                                MyComparator.ASC, MyComparator.MODE_DISTANCE));
                                         makeList();
                                         break;
                                     default:
@@ -128,7 +116,8 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
                             }
                         }).show();
                 break;
-            case R.id.item_exit:
+            // リスト画面を終了することで、裏の地図画面を再表示する。
+            case R.id.item_map:
                 finish();
                 break;
         }
@@ -161,10 +150,20 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
         List<MyCustomListData> object = new ArrayList<MyCustomListData>();
 
         for (int iTargetCount = 0; iTargetCount < mTargetList.size(); iTargetCount++) {
-            MyCustomListData tmpItem = new MyCustomListData();
-            tmpItem.setMessage(mTargetList.get(iTargetCount).getName());
+            final MyCustomListData tmpItem = new MyCustomListData();
+
+            double destLat = Double.valueOf(mTargetList.get(iTargetCount).getLatitude());
+            double destLon = Double.valueOf(mTargetList.get(iTargetCount).getLongitude());
+            mTargetList.get(iTargetCount).setDistance(mRakutenClient.getmMyLatitute(),
+                    mRakutenClient.getmMyLongitude(), destLat, destLon);
+
+            tmpItem.setHotelName(mTargetList.get(iTargetCount).getName());
+            tmpItem.setHotelInfo(mTargetList.get(iTargetCount).getSpecial());
+            tmpItem.setHotelDistance(Integer.toString(Math.round(mTargetList.get(iTargetCount)
+                    .getDistance())) + "m");
             object.add(tmpItem);
         }
+
         MyCustomListAdapter myCustomListAdapter = new MyCustomListAdapter(this, 0, object);
         mListView.setAdapter(myCustomListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

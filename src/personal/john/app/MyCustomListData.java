@@ -2,25 +2,47 @@
 package personal.john.app;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 public class MyCustomListData {
-    private Bitmap bitmap;
+    private Bitmap mHotelImg;
 
-    private String message;
+    private String mHotelName;
 
-    public void setBitmap(Bitmap img) {
-        bitmap = img;
+    private String mHotelInfo;
+
+    private String mHotelDistance;
+
+    public void setHotelImage(Bitmap result) {
+        mHotelImg = result;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public Bitmap getHotelImage() {
+        return mHotelImg;
     }
 
-    public void setMessage(String msg) {
-        message = msg;
+    public void setHotelName(String name) {
+        mHotelName = name;
     }
 
-    public String getMessage() {
-        return message;
+    public String getHotelName() {
+        return mHotelName;
     }
+
+    public void setHotelInfo(String info) {
+        mHotelInfo = info;
+    }
+
+    public String getHotelInfo() {
+        return mHotelInfo;
+    }
+
+    public void setHotelDistance(String distance) {
+        mHotelDistance = distance;
+    }
+
+    public String getHotelDistance() {
+        return mHotelDistance;
+    }
+
 }
