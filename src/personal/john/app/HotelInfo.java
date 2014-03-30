@@ -28,6 +28,8 @@ public class HotelInfo {
 
     private String mAddress2 = null;
 
+    private float mDistance = -1;
+
     public HotelInfo() {
         Location location = new Location("RakutenWebService");
         mLocation = location;
@@ -135,5 +137,15 @@ public class HotelInfo {
 
     public String getAddress() {
         return mAddress1 + mAddress2;
+    }
+
+    public void setDistance(double mylat, double mylon, double destlat, double destlon) {
+        float[] fDistance = new float[1];
+        Location.distanceBetween(mylat, mylon, destlat, destlon, fDistance);
+        mDistance = fDistance[1];
+    }
+
+    public float getDistance() {
+        return mDistance;
     }
 }

@@ -2,6 +2,7 @@
 package personal.john.app;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -101,10 +102,22 @@ public class ResultListView extends Activity implements OnClickListener, Rakuten
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:
-                                        mRakutenClient.setSearchRange(0.1);
+                                        Collections.sort(mTargetList, new MyComparator(MyComparator.ASC, MyComparator.MODE_HOTELNAME));
+                                        makeList();
                                         break;
                                     case 1:
-                                        mRakutenClient.setSearchRange(0.5);
+                                        for (int listIndex = 0; listIndex < mTargetList.size(); listIndex++) {
+                                            double destLat = Double.valueOf(mTargetList.get(
+                                                    listIndex).getLatitude());
+                                            double destLon = Double.valueOf(mTargetList.get(
+                                                    listIndex).getLongitude());
+                                            mTargetList.get(listIndex).setDistance(
+                                                    mRakutenClient.getmMyLatitute(),
+                                                    mRakutenClient.getmMyLongitude(), destLat,
+                                                    destLon);
+                                        }
+                                        Collections.sort(mTargetList, new MyComparator(MyComparator.ASC, MyComparator.MODE_DISTANCE));
+                                        makeList();
                                         break;
                                     default:
                                 }
